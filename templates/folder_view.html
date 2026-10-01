@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>{{ folder.name }} - CloudVault</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        CloudVault
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="/files">My Files</a>
+        <a href="/folders">Folders</a>
+        <a href="/trash">Trash</a>
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</nav>
+
+
+<section class="files-page">
+
+    <h1>📁 {{ folder.name }}</h1>
+
+    <p>
+        Files inside this folder
+    </p>
+
+
+    <!-- Upload file -->
+
+    <div class="upload-box">
+
+        <h3>Upload File</h3>
+
+        <form
+            action="{{ url_for('files.upload_to_folder', folder_id=folder.id) }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <input
+                type="file"
+                name="file"
+                required
+            >
+
+            <button type="submit">
+                Upload
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Files -->
+
+    {% if files %}
+
+        {% for file in files %}
+
+        <div class="file-card">
+
+            <div>
+                📄 {{ file.filename }}
+            </div>
+
+            <div class="file-actions">
+
+                <a href="{{ url_for('files.download', file_id=file.id) }}">
+                    Download
+                </a>
+
+                <form
+                    action="{{ url_for('files.rename', file_id=file.id) }}"
+                    method="POST"
+                >
+
+                    <input
+                        type="text"
+                        name="filename"
+                        value="{{ file.filename }}"
+                        required
+                    >
+
+                    <button type="submit">
+                        Rename
+                    </button>
+
+                </form>
+
+                <a href="{{ url_for('files.delete', file_id=file.id) }}">
+                    Delete
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-files">
+
+            <div>📁</div>
+
+            <h3>This folder is empty</h3>
+
+            <p>
+                Upload a file above to add it to this folder.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <br>
+
+    <a href="{{ url_for('folders.my_folders') }}">
+        ← Back to Folders
+    </a>
+
+</section>
+
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trash - CloudVault</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        ☁️ CloudVault
+    </div>
+
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/files">My Files</a>
+        <a href="/folders">Folders</a>
+        <a href="/trash">Trash</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</nav>
+
+
+<section class="files-page">
+
+    <div class="files-header">
+
+        <div>
+
+            <div class="project-badge">
+                CSE CLOUD STORAGE PROJECT
+            </div>
+
+            <h1>Trash 🗑️</h1>
+
+            <p>
+                Deleted files are kept here until you restore them.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="files-section">
+
+        <div class="section-title">
+
+            <h2>Deleted Files</h2>
+
+            <span>
+                {{ files|length }} files
+            </span>
+
+        </div>
+
+
+        {% if files %}
+
+            {% for file in files %}
+
+            <div class="file-card">
+
+                <div class="file-info">
+
+                    <div class="file-icon">
+                        🗑️
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            {{ file.filename }}
+                        </h3>
+
+                        <p>
+                            Moved to Trash
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="file-actions">
+
+                    <!-- RESTORE -->
+
+                    <a
+                        href="{{ url_for('files.restore', file_id=file.id) }}"
+                    >
+                        Restore
+                    </a>
+
+
+                    <!-- DOWNLOAD -->
+
+                    <a
+                        href="{{ url_for('files.download', file_id=file.id) }}"
+                    >
+                        Download
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-files">
+
+                <div class="empty-icon">
+                    🗑️
+                </div>
+
+                <h2>
+                    Trash is empty
+                </h2>
+
+                <p>
+                    Deleted files will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>
+        CloudVault • Computer Science Engineering Project • 2026
+    </p>
+
+    <p>
+        Built with Python, Flask, SQLite, Docker & Jenkins
+    </p>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard - CloudVault</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        ☁️ CloudVault
+    </div>
+
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/files">My Files</a>
+        <a href="/folders">Folders</a>
+        <a href="/trash">Trash</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</nav>
+
+
+<section class="dashboard">
+
+    <div class="dashboard-header">
+
+        <div>
+            <div class="project-badge">
+                CSE CLOUD STORAGE PROJECT
+            </div>
+
+            <h1>
+                Welcome, {{ current_user.name }} 👋
+            </h1>
+
+            <p>
+                Manage your files, folders and storage from one place.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+
+        <!-- FILES -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                📄
+            </div>
+
+            <h3>
+                My Files
+            </h3>
+
+            <p>
+                {{ file_count }} files
+            </p>
+
+            <a href="/files">
+                <button type="button">
+                    Open Files
+                </button>
+            </a>
+
+        </div>
+
+
+        <!-- UPLOAD -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                📤
+            </div>
+
+            <h3>
+                Upload Files
+            </h3>
+
+            <p>
+                Upload files to your CloudVault storage.
+            </p>
+
+            <a href="/files">
+                <button type="button">
+                    Upload File
+                </button>
+            </a>
+
+        </div>
+
+
+        <!-- FOLDERS -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                📁
+            </div>
+
+            <h3>
+                Folders
+            </h3>
+
+            <p>
+                {{ folder_count }} folders
+            </p>
+
+            <a href="/folders">
+                <button type="button">
+                    View Folders
+                </button>
+            </a>
+
+        </div>
+
+
+        <!-- TRASH -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                🗑️
+            </div>
+
+            <h3>
+                Trash
+            </h3>
+
+            <p>
+                {{ trash_count }} files
+            </p>
+
+            <a href="/trash">
+                <button type="button">
+                    Open Trash
+                </button>
+            </a>
+
+        </div>
+
+
+        <!-- STORAGE -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                ☁️
+            </div>
+
+            <h3>
+                Storage Used
+            </h3>
+
+            <p class="storage-value">
+                {{ storage_used }}
+            </p>
+
+            <span>
+                Local CloudVault Storage
+            </span>
+
+        </div>
+
+
+        <!-- PROFILE -->
+
+        <div class="dashboard-card">
+
+            <div class="card-icon">
+                👤
+            </div>
+
+            <h3>
+                My Profile
+            </h3>
+
+            <p>
+                View your account information.
+            </p>
+
+            <a href="/profile">
+                <button type="button">
+                    View Profile
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>
+        CloudVault • Computer Science Engineering Project • 2026
+    </p>
+
+    <p>
+        Built with Python, Flask, SQLite, Docker & Jenkins
+    </p>
+
+</footer>
+
+</body>
+</html>

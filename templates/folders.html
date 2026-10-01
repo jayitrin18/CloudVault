@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Folders - CloudVault</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        ☁️ CloudVault
+    </div>
+
+    <div class="nav-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/files">My Files</a>
+        <a href="/folders">Folders</a>
+        <a href="/trash">Trash</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</nav>
+
+
+<section class="files-page">
+
+    <div class="files-header">
+
+        <div>
+
+            <div class="project-badge">
+                CSE CLOUD STORAGE PROJECT
+            </div>
+
+            <h1>My Folders 📁</h1>
+
+            <p>
+                Organize your files into folders.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CREATE FOLDER -->
+
+    <div class="upload-box">
+
+        <h2>Create a New Folder</h2>
+
+        <p>
+            Create a folder to organize your files.
+        </p>
+
+        <form
+            action="{{ url_for('folders.create_folder') }}"
+            method="POST"
+        >
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter folder name"
+                required
+            >
+
+            <button type="submit">
+                📁 Create Folder
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- FOLDER LIST -->
+
+    <div class="files-section">
+
+        <div class="section-title">
+
+            <h2>Your Folders</h2>
+
+            <span>
+                {{ folders|length }} folders
+            </span>
+
+        </div>
+
+
+        {% if folders %}
+
+            {% for folder in folders %}
+
+            <div class="file-card">
+
+                <div class="file-info">
+
+                    <div class="file-icon">
+                        📁
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            {{ folder.name }}
+                        </h3>
+
+                        <p>
+                            CloudVault Folder
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="file-actions">
+
+                    <!-- OPEN -->
+
+                    <a
+                        href="{{ url_for('folders.open_folder', folder_id=folder.id) }}"
+                    >
+                        Open
+                    </a>
+
+
+                    <!-- DELETE -->
+
+                    <a
+                        href="{{ url_for('folders.delete_folder', folder_id=folder.id) }}"
+                        onclick="return confirm('Delete this folder?');"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-files">
+
+                <div class="empty-icon">
+                    📁
+                </div>
+
+                <h2>
+                    No folders yet
+                </h2>
+
+                <p>
+                    Create your first folder to organize your files.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>
+        CloudVault • Computer Science Engineering Project • 2026
+    </p>
+
+    <p>
+        Built with Python, Flask, SQLite, Docker & Jenkins
+    </p>
+
+</footer>
+
+</body>
+</html>
