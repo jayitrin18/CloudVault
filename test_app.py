@@ -17,3 +17,9 @@ def test_login_page():
     client = app.test_client()
     response = client.get("/login")
     assert response.status_code == 200
+
+
+def test_forgot_password_page():
+    client = app.test_client()
+    response = client.get("/forgot-password")
+    assert response.status_code == 200

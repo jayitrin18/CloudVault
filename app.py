@@ -1,7 +1,9 @@
 from flask import Flask, render_template
+from flask_mail import Mail
+from dotenv import load_dotenv
 import os
 
-from models.user import db, User
+from models.user import db, User, PasswordResetOTP
 from models.file import File
 from models.folder import Folder
 
@@ -16,6 +18,17 @@ from flask_login import (
 )
 
 
+# =========================================================
+# LOAD ENVIRONMENT VARIABLES
+# =========================================================
+
+load_dotenv()
+
+
+# =========================================================
+# CREATE FLASK APP
+# =========================================================
+
 app = Flask(__name__)
 
 
@@ -24,8 +37,28 @@ app = Flask(__name__)
 # =========================================================
 
 app.config["SECRET_KEY"] = "cloudvault-secret-key"
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////data/cloudvault.db"
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+
+# =========================================================
+# EMAIL CONFIGURATION
+# =========================================================
+
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+
+app.config["MAIL_PORT"] = 587
+
+app.config["MAIL_USE_TLS"] = True
+
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
+
+
+mail = Mail(app)
 
 
 # =========================================================
@@ -131,6 +164,16 @@ def dashboard():
 
 
 # =========================================================
+# HEALTH CHECK
+# =========================================================
+
+@app.route("/health")
+def health():
+
+    return {"status": "healthy"}, 200
+
+
+# =========================================================
 # CREATE DATABASE TABLES
 # =========================================================
 
@@ -144,6 +187,7 @@ with app.app_context():
 # =========================================================
 
 if __name__ == "__main__":
+
     app.run(
         host="0.0.0.0",
         port=5000,
