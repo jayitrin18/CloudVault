@@ -28,7 +28,13 @@ files = Blueprint(
 )
 
 
-UPLOAD_FOLDER = "storage"
+# Local/Docker default is "storage".
+# Vercel can override this using the UPLOAD_FOLDER
+# environment variable.
+UPLOAD_FOLDER = os.getenv(
+    "UPLOAD_FOLDER",
+    "storage"
+)
 
 # 100 MB storage limit
 STORAGE_LIMIT = 100 * 1024 * 1024
@@ -46,7 +52,9 @@ def get_user_storage_used(user_id):
 
     for file in user_files:
 
-        if os.path.exists(file.filepath):
+        if os.path.exists(
+            file.filepath
+        ):
 
             total_size += os.path.getsize(
                 file.filepath
@@ -556,7 +564,9 @@ def restore(file_id):
         return "Unauthorized", 403
 
     # Check quota before restoring
-    if os.path.exists(file.filepath):
+    if os.path.exists(
+        file.filepath
+    ):
 
         file_size = os.path.getsize(
             file.filepath
