@@ -2,13 +2,17 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Trash - CloudVault</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
 <body>
@@ -20,31 +24,52 @@
     </div>
 
     <div class="nav-links">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/files">My Files</a>
-        <a href="/folders">Folders</a>
-        <a href="/trash">Trash</a>
-        <a href="/profile">Profile</a>
-        <a href="/logout">Logout</a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/files">
+            My Files
+        </a>
+
+        <a href="/folders">
+            Folders
+        </a>
+
+        <a href="/trash">
+            Trash
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
     </div>
 
 </nav>
 
 
-<section class="files-page">
+<section class="page-container">
 
-    <div class="files-header">
+    <div class="page-header">
 
         <div>
 
             <div class="project-badge">
-                CSE CLOUD STORAGE PROJECT
+                RECYCLE BIN
             </div>
 
-            <h1>Trash 🗑️</h1>
+            <h1>
+                🗑️ Trash
+            </h1>
 
             <p>
-                Deleted files are kept here until you restore them.
+                Restore files that you previously deleted.
             </p>
 
         </div>
@@ -52,82 +77,89 @@
     </div>
 
 
-    <div class="files-section">
+    {% with messages = get_flashed_messages() %}
 
-        <div class="section-title">
+        {% if messages %}
 
-            <h2>Deleted Files</h2>
+            <div class="flash-message">
 
-            <span>
-                {{ files|length }} files
-            </span>
+                {% for message in messages %}
 
-        </div>
+                    <p>
+                        {{ message }}
+                    </p>
 
-
-        {% if files %}
-
-            {% for file in files %}
-
-            <div class="file-card">
-
-                <div class="file-info">
-
-                    <div class="file-icon">
-                        🗑️
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            {{ file.filename }}
-                        </h3>
-
-                        <p>
-                            Moved to Trash
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="file-actions">
-
-                    <!-- RESTORE -->
-
-                    <a
-                        href="{{ url_for('files.restore', file_id=file.id) }}"
-                    >
-                        Restore
-                    </a>
-
-
-                    <!-- DOWNLOAD -->
-
-                    <a
-                        href="{{ url_for('files.download', file_id=file.id) }}"
-                    >
-                        Download
-                    </a>
-
-                </div>
+                {% endfor %}
 
             </div>
 
-            {% endfor %}
+        {% endif %}
+
+    {% endwith %}
+
+
+    <div class="section-card">
+
+        {% if files %}
+
+            <div class="file-list">
+
+                {% for file in files %}
+
+                    <div class="file-item">
+
+                        <div class="file-info">
+
+                            <div class="file-icon">
+                                🗑️
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ file.filename }}
+                                </strong>
+
+                                <small>
+                                    File ID: {{ file.id }}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="file-actions">
+
+                            <a
+                                href="{{ url_for('files.restore', file_id=file.id) }}"
+                            >
+
+                                <button type="button">
+                                    Restore
+                                </button>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
 
         {% else %}
 
-            <div class="empty-files">
+            <div class="empty-state">
 
-                <div class="empty-icon">
+                <div>
                     🗑️
                 </div>
 
-                <h2>
+                <h3>
                     Trash is empty
-                </h2>
+                </h3>
 
                 <p>
                     Deleted files will appear here.
@@ -148,11 +180,8 @@
         CloudVault • Computer Science Engineering Project • 2026
     </p>
 
-    <p>
-        Built with Python, Flask, SQLite, Docker & Jenkins
-    </p>
-
 </footer>
 
 </body>
+
 </html>

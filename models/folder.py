@@ -9,7 +9,7 @@ class Folder(db.Model):
     )
 
     name = db.Column(
-        db.String(100),
+        db.String(255),
         nullable=False
     )
 

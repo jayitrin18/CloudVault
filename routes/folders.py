@@ -7,20 +7,23 @@ from flask import (
     flash
 )
 
-from flask_login import login_required, current_user
+from flask_login import (
+    login_required,
+    current_user
+)
 
 from models.user import db
 from models.folder import Folder
 from models.file import File
 
 
-folders = Blueprint("folders", __name__)
+folders = Blueprint(
+    "folders",
+    __name__
+)
 
 
-# =========================================================
-# MY FOLDERS
-# =========================================================
-
+# ALL FOLDERS
 @folders.route("/folders")
 @login_required
 def my_folders():
@@ -35,48 +38,73 @@ def my_folders():
     )
 
 
-# =========================================================
 # CREATE FOLDER
-# =========================================================
-
-@folders.route("/folders/create", methods=["POST"])
+@folders.route(
+    "/create-folder",
+    methods=["POST"]
+)
 @login_required
 def create_folder():
 
-    name = request.form.get("name")
+    folder_name = request.form.get(
+        "folder_name"
+    )
 
-    if not name:
-        flash("Folder name cannot be empty.")
+    if not folder_name:
+
+        flash(
+            "Folder name cannot be empty."
+        )
+
+        return redirect(
+            url_for("folders.my_folders")
+        )
+
+    existing_folder = Folder.query.filter_by(
+        user_id=current_user.id,
+        name=folder_name
+    ).first()
+
+    if existing_folder:
+
+        flash(
+            "A folder with this name already exists."
+        )
+
         return redirect(
             url_for("folders.my_folders")
         )
 
     new_folder = Folder(
-        name=name,
+        name=folder_name,
         user_id=current_user.id
     )
 
     db.session.add(new_folder)
     db.session.commit()
 
-    flash("Folder created successfully.")
+    flash(
+        "Folder created successfully!"
+    )
 
     return redirect(
         url_for("folders.my_folders")
     )
 
 
-# =========================================================
 # OPEN FOLDER
-# =========================================================
-
-@folders.route("/folders/open/<int:folder_id>")
+@folders.route(
+    "/folder/<int:folder_id>"
+)
 @login_required
 def open_folder(folder_id):
 
-    folder = Folder.query.get_or_404(folder_id)
+    folder = Folder.query.get_or_404(
+        folder_id
+    )
 
     if folder.user_id != current_user.id:
+
         return "Unauthorized", 403
 
     folder_files = File.query.filter_by(
@@ -92,41 +120,37 @@ def open_folder(folder_id):
     )
 
 
-# =========================================================
 # DELETE FOLDER
-# =========================================================
-
-@folders.route("/folders/delete/<int:folder_id>")
+@folders.route(
+    "/delete-folder/<int:folder_id>"
+)
 @login_required
 def delete_folder(folder_id):
 
-    folder = Folder.query.get_or_404(folder_id)
+    folder = Folder.query.get_or_404(
+        folder_id
+    )
 
     if folder.user_id != current_user.id:
+
         return "Unauthorized", 403
 
-    # Check if folder contains active files
-    files_in_folder = File.query.filter_by(
-        folder_id=folder.id,
-        user_id=current_user.id,
-        is_deleted=False
-    ).count()
+    # Remove folder reference from files
+    folder_files = File.query.filter_by(
+        folder_id=folder.id
+    ).all()
 
-    if files_in_folder > 0:
+    for file in folder_files:
 
-        flash(
-            "This folder contains files. "
-            "Move or delete the files before deleting the folder."
-        )
-
-        return redirect(
-            url_for("folders.my_folders")
-        )
+        file.folder_id = None
 
     db.session.delete(folder)
+
     db.session.commit()
 
-    flash("Folder deleted successfully.")
+    flash(
+        "Folder deleted successfully."
+    )
 
     return redirect(
         url_for("folders.my_folders")

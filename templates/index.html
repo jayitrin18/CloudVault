@@ -3,9 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CloudVault - Your Personal Cloud</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CloudVault</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
@@ -20,8 +22,19 @@
     </div>
 
     <div class="nav-links">
-        <a href="/login">Login</a>
-        <a href="/register" class="nav-button">Get Started</a>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/login">
+            Login
+        </a>
+
+        <a href="/register">
+            Register
+        </a>
+
     </div>
 
 </nav>
@@ -32,43 +45,36 @@
     <div class="hero-content">
 
         <div class="project-badge">
-            CSE PROJECT • CLOUD STORAGE
+            CSE CLOUD STORAGE PROJECT
         </div>
 
         <h1>
-            Your Personal
-            <span>CloudVault.</span>
+            Your Files.
+            <br>
+            Your Cloud.
+            <br>
+            Your Vault.
         </h1>
 
         <p>
-            A cloud-based file storage and management system
-            designed and developed as a Computer Science Engineering project.
+            CloudVault is a secure personal cloud storage
+            platform for uploading, organizing and managing
+            your files.
         </p>
 
         <div class="hero-buttons">
 
             <a href="/register">
-                <button type="button">
+                <button>
                     Get Started
                 </button>
             </a>
 
             <a href="/login">
-                <button type="button" class="secondary-button">
+                <button class="secondary-button">
                     Login
                 </button>
             </a>
-
-        </div>
-
-        <div class="tech-stack">
-
-            <span>Python</span>
-            <span>Flask</span>
-            <span>SQLite</span>
-            <span>Docker</span>
-            <span>Jenkins</span>
-            <span>GitHub</span>
 
         </div>
 
@@ -79,44 +85,81 @@
 
 <section class="features">
 
-    <h2>Everything you need</h2>
+    <h2>
+        CloudVault Features
+    </h2>
 
     <div class="feature-grid">
 
         <div class="feature-card">
-            <div class="feature-icon">📤</div>
-            <h3>Upload Files</h3>
+
+            <div class="card-icon">
+                📁
+            </div>
+
+            <h3>
+                File Management
+            </h3>
+
             <p>
-                Upload your files and keep them
-                organized in one place.
+                Upload, download, rename and organize
+                your files.
             </p>
+
         </div>
 
-        <div class="feature-card">
-            <div class="feature-icon">📁</div>
-            <h3>Organize</h3>
-            <p>
-                Create folders and move your files
-                exactly where you want them.
-            </p>
-        </div>
 
         <div class="feature-card">
-            <div class="feature-icon">🔐</div>
-            <h3>Private</h3>
+
+            <div class="card-icon">
+                ☁️
+            </div>
+
+            <h3>
+                Storage
+            </h3>
+
             <p>
-                Your account and files are protected
-                with secure authentication.
+                Monitor your storage usage with a
+                100 MB storage limit.
             </p>
+
         </div>
 
+
         <div class="feature-card">
-            <div class="feature-icon">🗑️</div>
-            <h3>Trash & Restore</h3>
+
+            <div class="card-icon">
+                🔐
+            </div>
+
+            <h3>
+                Secure Login
+            </h3>
+
             <p>
-                Deleted files can be restored
-                whenever you need them.
+                Password hashing and OTP-based
+                password recovery.
             </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="card-icon">
+                🐳
+            </div>
+
+            <h3>
+                DevOps
+            </h3>
+
+            <p>
+                Docker and Jenkins are used for
+                containerization and CI/CD.
+            </p>
+
         </div>
 
     </div>

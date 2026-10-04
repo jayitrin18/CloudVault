@@ -1,54 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Verify OTP - CloudVault</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Verify OTP - CloudVault
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
-<body>
+<body class="auth-body">
 
 <div class="auth-container">
 
-    <div class="auth-box">
+    <div class="auth-card">
 
-        <h1>Verify OTP</h1>
+        <div class="auth-logo">
+            ☁️ CloudVault
+        </div>
 
-        <p>Enter the 6-digit OTP sent to your email.</p>
+        <div class="auth-badge">
+            OTP VERIFICATION
+        </div>
+
+        <h1>
+            Verify OTP
+        </h1>
+
+        <p class="auth-subtitle">
+            Enter the 6-digit OTP sent to your email.
+        </p>
+
 
         {% with messages = get_flashed_messages() %}
+
             {% if messages %}
-                {% for message in messages %}
-                    <p class="flash-message">{{ message }}</p>
-                {% endfor %}
+
+                <div class="flash-message">
+
+                    {% for message in messages %}
+
+                        {{ message }}
+
+                    {% endfor %}
+
+                </div>
+
             {% endif %}
+
         {% endwith %}
+
 
         <form method="POST">
 
-            <input
-                type="text"
-                name="otp"
-                placeholder="Enter 6-digit OTP"
-                maxlength="6"
-                pattern="[0-9]{6}"
-                required
-            >
+            <div class="form-group">
 
-            <button type="submit" class="auth-button">
+                <label for="otp">
+                    OTP
+                </label>
+
+                <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    placeholder="Enter 6-digit OTP"
+                    maxlength="6"
+                    pattern="[0-9]{6}"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="auth-button"
+            >
                 Verify OTP
             </button>
 
         </form>
 
-        <p>
-            <a href="{{ url_for('auth.forgot_password') }}">
-                Request New OTP
-            </a>
+
+        <p class="auth-footer">
+
+            OTP is valid for 5 minutes.
+
         </p>
+
+
+        <a
+            href="{{ url_for('auth.forgot_password') }}"
+            class="back-home"
+        >
+            Request New OTP
+        </a>
 
     </div>
 
 </div>
 
 </body>
+
 </html>

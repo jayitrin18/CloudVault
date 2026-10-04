@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>{{ folder.name }} - CloudVault</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {{ folder.name }} - CloudVault
+    </title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
@@ -15,40 +22,95 @@
 <nav class="navbar">
 
     <div class="logo">
-        CloudVault
+        ☁️ CloudVault
     </div>
 
     <div class="nav-links">
 
-        <a href="/dashboard">Dashboard</a>
-        <a href="/files">My Files</a>
-        <a href="/folders">Folders</a>
-        <a href="/trash">Trash</a>
-        <a href="/logout">Logout</a>
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/files">
+            My Files
+        </a>
+
+        <a href="/folders">
+            Folders
+        </a>
+
+        <a href="/trash">
+            Trash
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
 
     </div>
 
 </nav>
 
 
-<section class="files-page">
+<section class="page-container">
 
-    <h1>📁 {{ folder.name }}</h1>
+    <div class="page-header">
 
-    <p>
-        Files inside this folder
-    </p>
+        <div>
+
+            <div class="project-badge">
+                FOLDER
+            </div>
+
+            <h1>
+                📁 {{ folder.name }}
+            </h1>
+
+            <p>
+                Manage files inside this folder.
+            </p>
+
+        </div>
+
+    </div>
 
 
-    <!-- Upload file -->
+    {% with messages = get_flashed_messages() %}
 
-    <div class="upload-box">
+        {% if messages %}
 
-        <h3>Upload File</h3>
+            <div class="flash-message">
+
+                {% for message in messages %}
+
+                    <p>
+                        {{ message }}
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- UPLOAD TO FOLDER -->
+
+    <div class="section-card">
+
+        <h2>
+            Upload File
+        </h2>
 
         <form
-            action="{{ url_for('files.upload_to_folder', folder_id=folder.id) }}"
             method="POST"
+            action="{{ url_for('files.upload_to_folder', folder_id=folder.id) }}"
             enctype="multipart/form-data"
         >
 
@@ -59,7 +121,7 @@
             >
 
             <button type="submit">
-                Upload
+                Upload to Folder
             </button>
 
         </form>
@@ -67,76 +129,119 @@
     </div>
 
 
-    <!-- Files -->
+    <!-- FILES -->
 
-    {% if files %}
+    <div class="section-card">
 
-        {% for file in files %}
+        <h2>
+            Files in {{ folder.name }}
+        </h2>
 
-        <div class="file-card">
 
-            <div>
-                📄 {{ file.filename }}
+        {% if files %}
+
+            <div class="file-list">
+
+                {% for file in files %}
+
+                    <div class="file-item">
+
+                        <div class="file-info">
+
+                            <div class="file-icon">
+                                📄
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ file.filename }}
+                                </strong>
+
+                                <small>
+                                    File ID: {{ file.id }}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="file-actions">
+
+                            <a
+                                href="{{ url_for('files.download', file_id=file.id) }}"
+                            >
+
+                                <button type="button">
+                                    Download
+                                </button>
+
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('files.delete', file_id=file.id) }}"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="danger-button"
+                                >
+                                    Trash
+                                </button>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
             </div>
 
-            <div class="file-actions">
+        {% else %}
 
-                <a href="{{ url_for('files.download', file_id=file.id) }}">
-                    Download
-                </a>
+            <div class="empty-state">
 
-                <form
-                    action="{{ url_for('files.rename', file_id=file.id) }}"
-                    method="POST"
-                >
+                <div>
+                    📂
+                </div>
 
-                    <input
-                        type="text"
-                        name="filename"
-                        value="{{ file.filename }}"
-                        required
-                    >
+                <h3>
+                    This folder is empty
+                </h3>
 
-                    <button type="submit">
-                        Rename
-                    </button>
-
-                </form>
-
-                <a href="{{ url_for('files.delete', file_id=file.id) }}">
-                    Delete
-                </a>
+                <p>
+                    Upload a file to get started.
+                </p>
 
             </div>
 
-        </div>
+        {% endif %}
 
-        {% endfor %}
-
-    {% else %}
-
-        <div class="empty-files">
-
-            <div>📁</div>
-
-            <h3>This folder is empty</h3>
-
-            <p>
-                Upload a file above to add it to this folder.
-            </p>
-
-        </div>
-
-    {% endif %}
+    </div>
 
 
-    <br>
+    <a href="/folders">
 
-    <a href="{{ url_for('folders.my_folders') }}">
-        ← Back to Folders
+        <button type="button">
+            ← Back to Folders
+        </button>
+
     </a>
 
 </section>
+
+
+<footer>
+
+    <p>
+        CloudVault • Computer Science Engineering Project • 2026
+    </p>
+
+</footer>
 
 </body>
 

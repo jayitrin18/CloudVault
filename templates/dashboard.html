@@ -2,13 +2,17 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Dashboard - CloudVault</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
 <body>
@@ -20,12 +24,31 @@
     </div>
 
     <div class="nav-links">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/files">My Files</a>
-        <a href="/folders">Folders</a>
-        <a href="/trash">Trash</a>
-        <a href="/profile">Profile</a>
-        <a href="/logout">Logout</a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/files">
+            My Files
+        </a>
+
+        <a href="/folders">
+            Folders
+        </a>
+
+        <a href="/trash">
+            Trash
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
     </div>
 
 </nav>
@@ -36,6 +59,7 @@
     <div class="dashboard-header">
 
         <div>
+
             <div class="project-badge">
                 CSE CLOUD STORAGE PROJECT
             </div>
@@ -45,8 +69,10 @@
             </h1>
 
             <p>
-                Manage your files, folders and storage from one place.
+                Manage your files, folders and storage
+                from one place.
             </p>
+
         </div>
 
     </div>
@@ -72,9 +98,11 @@
             </p>
 
             <a href="/files">
+
                 <button type="button">
                     Open Files
                 </button>
+
             </a>
 
         </div>
@@ -97,9 +125,11 @@
             </p>
 
             <a href="/files">
+
                 <button type="button">
                     Upload File
                 </button>
+
             </a>
 
         </div>
@@ -122,9 +152,11 @@
             </p>
 
             <a href="/folders">
+
                 <button type="button">
                     View Folders
                 </button>
+
             </a>
 
         </div>
@@ -147,9 +179,11 @@
             </p>
 
             <a href="/trash">
+
                 <button type="button">
                     Open Trash
                 </button>
+
             </a>
 
         </div>
@@ -164,15 +198,33 @@
             </div>
 
             <h3>
-                Storage Used
+                Storage
             </h3>
 
             <p class="storage-value">
+
                 {{ storage_used }}
+                /
+                {{ storage_limit }}
+
             </p>
 
+
+            <div class="storage-bar">
+
+                <div
+                    class="storage-progress"
+                    style="width: {{ storage_percentage }}%;">
+                </div>
+
+            </div>
+
+
             <span>
-                Local CloudVault Storage
+
+                {{ "%.1f"|format(storage_percentage) }}%
+                used
+
             </span>
 
         </div>
@@ -195,9 +247,11 @@
             </p>
 
             <a href="/profile">
+
                 <button type="button">
                     View Profile
                 </button>
+
             </a>
 
         </div>
@@ -220,4 +274,5 @@
 </footer>
 
 </body>
+
 </html>

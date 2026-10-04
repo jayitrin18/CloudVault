@@ -2,13 +2,17 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>My Files - CloudVault</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
 <body>
@@ -20,49 +24,93 @@
     </div>
 
     <div class="nav-links">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/files">My Files</a>
-        <a href="/folders">Folders</a>
-        <a href="/trash">Trash</a>
-        <a href="/profile">Profile</a>
-        <a href="/logout">Logout</a>
+
+        <a href="/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/files">
+            My Files
+        </a>
+
+        <a href="/folders">
+            Folders
+        </a>
+
+        <a href="/trash">
+            Trash
+        </a>
+
+        <a href="/profile">
+            Profile
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
     </div>
 
 </nav>
 
 
-<section class="files-page">
+<section class="page-container">
 
-    <div class="files-header">
+    <div class="page-header">
 
         <div>
+
             <div class="project-badge">
-                CSE CLOUD STORAGE PROJECT
+                FILE MANAGEMENT
             </div>
 
-            <h1>My Files</h1>
+            <h1>
+                My Files
+            </h1>
 
             <p>
-                Upload and manage your files in CloudVault.
+                Upload and manage your files.
             </p>
+
         </div>
 
     </div>
 
 
+    <!-- FLASH MESSAGES -->
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            <div class="flash-message">
+
+                {% for message in messages %}
+
+                    <p>
+                        {{ message }}
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
     <!-- UPLOAD -->
 
-    <div class="upload-box">
+    <div class="section-card">
 
-        <h2>Upload a File</h2>
-
-        <p>
-            Select a file from your computer to store it in CloudVault.
-        </p>
+        <h2>
+            Upload File
+        </h2>
 
         <form
-            action="{{ url_for('files.upload') }}"
             method="POST"
+            action="/upload"
             enctype="multipart/form-data"
         >
 
@@ -73,7 +121,7 @@
             >
 
             <button type="submit">
-                📤 Upload File
+                Upload
             </button>
 
         </form>
@@ -83,161 +131,182 @@
 
     <!-- SEARCH -->
 
-    <div class="search-box">
+    <div class="section-card">
 
-        <form method="GET" action="{{ url_for('files.my_files') }}">
+        <h2>
+            Search Files
+        </h2>
+
+        <form method="GET"
+              action="/files">
 
             <input
                 type="text"
                 name="search"
                 value="{{ search }}"
-                placeholder="Search your files..."
+                placeholder="Search filename..."
             >
 
             <button type="submit">
                 Search
             </button>
 
+            {% if search %}
+
+                <a href="/files">
+                    Clear
+                </a>
+
+            {% endif %}
+
         </form>
 
     </div>
 
 
-    <!-- FILES -->
+    <!-- FILE LIST -->
 
-    <div class="files-section">
+    <div class="section-card">
 
-        <div class="section-title">
-
-            <h2>Your Files</h2>
-
-            <span>
-                {{ files|length }} files
-            </span>
-
-        </div>
+        <h2>
+            Your Files
+        </h2>
 
 
         {% if files %}
 
-            {% for file in files %}
+            <div class="file-list">
 
-            <div class="file-card">
+                {% for file in files %}
 
-                <div class="file-info">
+                    <div class="file-item">
 
-                    <div class="file-icon">
-                        📄
+                        <div class="file-info">
+
+                            <div class="file-icon">
+                                📄
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    {{ file.filename }}
+                                </strong>
+
+                                <small>
+                                    File ID: {{ file.id }}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="file-actions">
+
+                            <!-- DOWNLOAD -->
+
+                            <a
+                                href="{{ url_for('files.download', file_id=file.id) }}"
+                            >
+                                <button type="button">
+                                    Download
+                                </button>
+                            </a>
+
+
+                            <!-- RENAME -->
+
+                            <form
+                                method="POST"
+                                action="{{ url_for('files.rename', file_id=file.id) }}"
+                            >
+
+                                <input
+                                    type="text"
+                                    name="filename"
+                                    placeholder="New name"
+                                    required
+                                >
+
+                                <button type="submit">
+                                    Rename
+                                </button>
+
+                            </form>
+
+
+                            <!-- MOVE -->
+
+                            {% if folders %}
+
+                                <form
+                                    method="POST"
+                                    action="{{ url_for('files.move_file', file_id=file.id) }}"
+                                >
+
+                                    <select name="folder_id" required>
+
+                                        <option value="">
+                                            Select Folder
+                                        </option>
+
+                                        {% for folder in folders %}
+
+                                            <option value="{{ folder.id }}">
+                                                {{ folder.name }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                    <button type="submit">
+                                        Move
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+
+                            <!-- DELETE -->
+
+                            <a
+                                href="{{ url_for('files.delete', file_id=file.id) }}"
+                            >
+
+                                <button
+                                    type="button"
+                                    class="danger-button"
+                                >
+                                    Trash
+                                </button>
+
+                            </a>
+
+                        </div>
+
                     </div>
 
-                    <div>
-
-                        <h3>
-                            {{ file.filename }}
-                        </h3>
-
-                        <p>
-                            Stored in CloudVault
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="file-actions">
-
-                    <!-- DOWNLOAD -->
-
-                    <a href="{{ url_for('files.download', file_id=file.id) }}">
-                        Download
-                    </a>
-
-
-                    <!-- RENAME -->
-
-                    <form
-                        action="{{ url_for('files.rename', file_id=file.id) }}"
-                        method="POST"
-                    >
-
-                        <input
-                            type="text"
-                            name="filename"
-                            value="{{ file.filename }}"
-                            required
-                        >
-
-                        <button type="submit">
-                            Rename
-                        </button>
-
-                    </form>
-
-
-                    <!-- MOVE -->
-
-                    {% if folders %}
-
-                    <form
-                        action="{{ url_for('files.move_file', file_id=file.id) }}"
-                        method="POST"
-                    >
-
-                        <select name="folder_id" required>
-
-                            <option value="">
-                                Move to folder
-                            </option>
-
-                            {% for folder in folders %}
-
-                            <option value="{{ folder.id }}">
-                                {{ folder.name }}
-                            </option>
-
-                            {% endfor %}
-
-                        </select>
-
-                        <button type="submit">
-                            Move
-                        </button>
-
-                    </form>
-
-                    {% endif %}
-
-
-                    <!-- DELETE -->
-
-                    <a
-                        href="{{ url_for('files.delete', file_id=file.id) }}"
-                        onclick="return confirm('Move this file to Trash?');"
-                    >
-                        Delete
-                    </a>
-
-                </div>
+                {% endfor %}
 
             </div>
 
-            {% endfor %}
-
         {% else %}
 
-            <div class="empty-files">
+            <div class="empty-state">
 
-                <div class="empty-icon">
+                <div>
                     📂
                 </div>
 
-                <h2>
-                    No files yet
-                </h2>
+                <h3>
+                    No files found
+                </h3>
 
                 <p>
-                    Upload your first file to start using CloudVault.
+                    Upload your first file to CloudVault.
                 </p>
 
             </div>
@@ -255,11 +324,8 @@
         CloudVault • Computer Science Engineering Project • 2026
     </p>
 
-    <p>
-        Built with Python, Flask, SQLite, Docker & Jenkins
-    </p>
-
 </footer>
 
 </body>
+
 </html>

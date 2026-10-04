@@ -9,7 +9,10 @@ db = SQLAlchemy()
 
 class User(UserMixin, db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
     name = db.Column(
         db.String(100),

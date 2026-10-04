@@ -3,6 +3,7 @@ from flask_mail import Message
 
 
 def send_email(recipient, subject, body):
+
     message = Message(
         subject=subject,
         sender=current_app.config["MAIL_USERNAME"],
