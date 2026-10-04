@@ -38,7 +38,7 @@ app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "cloudvault-secret-key"
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////data/cloudvault.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///cloudvault.db"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
