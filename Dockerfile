@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 RUN mkdir -p storage
+RUN mkdir -p /data
 
 EXPOSE 5000
 
