@@ -11,10 +11,7 @@
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
-          <link rel="manifest"
-      href="{{ url_for('static', filename='manifest.json') }}">
-
-<meta name="theme-color" content="#6c63ff">
+          
 </head>
 
 <body>
@@ -170,13 +167,7 @@
 <footer>
 
 </footer>
-<script>
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register(
-            "{{ url_for('static', filename='sw.js') }}"
-        );
-    }
-</script>
+
 
 </body>
 
